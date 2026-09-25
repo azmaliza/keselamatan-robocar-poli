@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROBOCAR POLI - Misi Wira Keselamatan</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#dff4ff,#fff3c4,#e5ffd8);color:#263548}
+button{font:inherit}
+#app{max-width:1000px;margin:auto;padding:18px}
+.hero{position:relative;overflow:hidden;padding:38px 24px;border-radius:30px;background:linear-gradient(135deg,#dff4ff,#fff4c9 52%,#e7ffd9);border:4px solid white;text-align:center;box-shadow:0 8px 25px #0002}
+.cloud{position:absolute;font-size:42px;opacity:.7}.c1{top:15px;left:6%}.c2{top:55px;right:9%}.c3{bottom:20px;left:13%}
+.badge{display:inline-block;padding:8px 14px;border-radius:999px;background:white;border:3px solid #ffd34e;font-weight:900;font-size:14px}
+h1{font-size:clamp(28px,6vw,50px);font-weight:1000;line-height:1.05;margin:15px 0 8px;color:#17324d}
+.subtitle{font-size:17px;font-weight:700;color:#526174;max-width:700px;margin:auto auto 22px}
+.actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+button{min-height:48px;border:0;border-radius:15px;padding:11px 19px;font-weight:900;cursor:pointer;transition:.15s}
+button:hover{transform:translateY(-2px)}
+.primary{background:#ffb703;color:white;border:3px solid white;box-shadow:0 4px 0 #d58d00}
+.secondary{background:white;color:#334155;border:2px solid #d9e2ec}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.stats{display:flex;gap:8px;flex-wrap:wrap}
+.stat{padding:8px 12px;border-radius:12px;background:white;border:2px solid #e1e8ef;font-size:14px;font-weight:900}
+.progress{height:13px;background:#dfe7ef;border-radius:99px;overflow:hidden;margin:10px 0 17px}
+.bar{height:100%;background:linear-gradient(90deg,#ffb703,#ff6b6b,#7bdc65);transition:.35s}
+.map-wrap{padding:16px;border-radius:28px;background:linear-gradient(160deg,#d9f7c8,#bfe8ff);border:4px solid white}
+.map-title{text-align:center;font-size:29px;font-weight:1000}.map-sub{text-align:center;font-size:14px;font-weight:700;color:#526174;margin:4px 0 12px}
+.map{position:relative;min-height:650px;border-radius:23px;overflow:hidden;background:#bde99b;border:3px solid white}
+.road{position:absolute;background:#d9b77c;border:7px solid #fff1c9;border-radius:80px;opacity:.9}
+.r1{width:110%;height:80px;left:-5%;top:285px;transform:rotate(-8deg)}
+.r2{width:82px;height:110%;left:46%;top:-5%;transform:rotate(12deg)}
+.river{position:absolute;right:-30px;top:0;width:130px;height:100%;background:#79c9ee;transform:rotate(4deg);opacity:.75;border-left:5px solid white}
+.tree{position:absolute;font-size:34px}.t1{left:3%;top:8%}.t2{left:82%;top:7%}.t3{left:5%;bottom:8%}.t4{right:19%;bottom:6%}.t5{left:75%;top:53%}
+.station{position:absolute;width:145px;min-height:100px;padding:8px 5px;border-radius:19px;background:white;border:4px solid white;box-shadow:0 5px 0 #0002;text-align:center;color:#263548;z-index:3}
+.station.locked{filter:grayscale(.8);opacity:.48;cursor:not-allowed}.station.done{border-color:#ffd43b;background:#fffdf0}.station.next{animation:pulse 1.4s infinite}
+.icon{font-size:36px;line-height:1}.sn{font-size:11px;font-weight:1000;color:#6b7280}.st{font-size:13px;font-weight:1000;line-height:1.1;margin-top:3px}
+@keyframes pulse{50%{transform:scale(1.05)}}
+.s1{left:4%;top:5%}.s2{left:52%;top:5%}.s3{left:20%;top:27%}.s4{right:3%;top:30%}.s5{left:3%;top:49%}.s6{left:54%;top:50%}.s7{left:18%;top:68%}.s8{right:3%;top:70%}.s9{left:51%;bottom:3%}.s10{left:4%;bottom:3%}
+.card{margin-top:14px;background:white;border:3px solid #e5edf5;border-radius:25px;padding:24px;box-shadow:0 7px 20px #0001}
+.scene{text-align:center;font-size:64px;margin:2px}.question{font-size:23px;font-weight:1000;text-align:center;line-height:1.45;margin:15px 0 20px}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:12px}.option{background:#f7fbff;border:3px solid #dce6ef;color:#27364a;text-align:left}.option.correct{background:#dff8e8;border-color:#35a66b}.option.wrong{background:#ffe3e3;border-color:#e35d6a}
+.feedback{margin-top:15px;padding:15px;border-radius:16px;font-weight:900;text-align:center}
+.success{background:#e0f8e9;color:#17633b}.error{background:#ffe5e5;color:#8a2933}
+.modal{padding:25px;border-radius:25px;background:linear-gradient(135deg,#fff8d7,#e3f8ff);border:4px solid #ffd34e;text-align:center}
+.medal{font-size:88px;animation:pop .5s ease-out}@keyframes pop{0%{transform:scale(.3);opacity:0}70%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
+.stars{font-size:28px;letter-spacing:3px}.note{line-height:1.75}.note p{margin:10px 0}
+.hidden{display:none}
+@media(max-width:650px){
+#app{padding:10px}.map{min-height:760px}
+.station{width:118px!important}.st{font-size:11px}.sn{font-size:9px}
+.s1{left:2%}.s2{left:54%}.s3{left:8%}.s4{right:1%}.s5{left:2%}.s6{left:54%}.s7{left:8%}.s8{right:1%}.s9{left:54%}.s10{left:2%}
+.options{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="app">
+<section class="hero" id="home">
+<div class="cloud c1">☁️</div><div class="cloud c2">☁️</div><div class="cloud c3">☁️</div>
+<div class="badge">🚓 ROBOCAR POLI • BAHASA MELAYU TAHUN 4</div>
+<h1>🚨 MISI WIRA KESELAMATAN 🚨</h1>
+<p class="subtitle">Bantu Poli dan rakan-rakan menyelesaikan 10 misi di Broomstown sambil menguasai Kata Sendi Nama!</p>
+<div class="actions">
+<button class="primary" id="start">🚓 MULA MISI</button>
+<button class="secondary" id="notes">📖 NOTA</button>
+</div>
+</section>
+<section id="screen" class="hidden"></section>
+</div>
+
+<script>
+const stations=[
+{name:'Balai Polis Poli',icon:'🚓',desc:'Kenal pasti kata sendi nama',q:'Poli berada ___ balai polis.',opts:['di','ke','daripada'],ans:0,exp:'“Di” digunakan untuk menunjukkan tempat.'},
+{name:'Balai Bomba Roy',icon:'🚒',desc:'Pilih kata sendi nama',q:'Roy bergerak ___ balai bomba.',opts:['dari','ke','pada'],ans:1,exp:'“Ke” menunjukkan arah atau tempat yang dituju.'},
+{name:'Hospital Amber',icon:'🚑',desc:'Lengkapkan ayat',q:'Amber menerima arahan ___ doktor.',opts:['daripada','di','ke'],ans:0,exp:'“Daripada” boleh menunjukkan sumber atau pihak yang memberikan sesuatu.'},
+{name:'Helly Udara',icon:'🚁',desc:'Di, ke atau dari?',q:'Helly datang ___ balai polis.',opts:['di','ke','dari'],ans:2,exp:'“Dari” menunjukkan tempat asal.'},
+{name:'Lintasan Jalan Raya',icon:'🚦',desc:'Keselamatan jalan raya',q:'Murid melintas jalan raya ___ berhati-hati.',opts:['dengan','kepada','daripada'],ans:0,exp:'“Dengan” menunjukkan cara atau keadaan melakukan sesuatu.'},
+{name:'Sekolah Selamat',icon:'🏫',desc:'Pilih kata yang tepat',q:'Murid berjalan ___ kantin.',opts:['di','ke','daripada'],ans:1,exp:'“Ke” menunjukkan tempat yang dituju.'},
+{name:'Rumah Selamat',icon:'🏠',desc:'Baiki ayat',q:'Ali pulang ___ sekolah.',opts:['di','ke','dari'],ans:2,exp:'“Dari” menunjukkan tempat asal.'},
+{name:'Jalan Raya',icon:'🛣️',desc:'Situasi keselamatan',q:'Pakai topi keledar ___ keselamatan diri.',opts:['untuk','di','dari'],ans:0,exp:'“Untuk” menunjukkan tujuan.'},
+{name:'Hospital Broomstown',icon:'🏥',desc:'Arahan keselamatan',q:'Polis memberikan arahan ___ orang ramai.',opts:['kepada','di','dari'],ans:0,exp:'“Kepada” menunjukkan penerima.'},
+{name:'Pusat Keselamatan',icon:'🏆',desc:'CABARAN AKHIR!',q:'Poli bergerak ___ balai polis ___ membantu orang awam.',opts:['ke, untuk','di, dengan','dari, kepada'],ans:0,exp:'“Ke” menunjukkan tempat yang dituju dan “untuk” menunjukkan tujuan.'}
+];
+let unlocked=0,score=0,completed=Array(10).fill(false);
+const home=document.getElementById('home'),screen=document.getElementById('screen');
+
+function showMap(){
+home.classList.add('hidden');screen.classList.remove('hidden');
+screen.innerHTML=`
+<div class="top"><div><strong>🗺️ PETA BROOMSTOWN</strong><div style="font-size:13px;color:#526174;font-weight:700">Selesaikan satu misi untuk membuka laluan seterusnya.</div></div>
+<div class="stats"><span class="stat">🏅 ${completed.filter(Boolean).length}/10 Lencana</span><span class="stat">⭐ ${score} Mata</span></div></div>
+<div class="progress"><div class="bar" style="width:${completed.filter(Boolean).length*10}%"></div></div>
+<div class="map-wrap"><div class="map-title">🌳 BROOMSTOWN 🌳</div><div class="map-sub">Ikuti laluan misi Poli!</div>
+<div class="map"><div class="river"></div><div class="road r1"></div><div class="road r2"></div>
+<span class="tree t1">🌳</span><span class="tree t2">🌲</span><span class="tree t3">🌳</span><span class="tree t4">🌲</span><span class="tree t5">🌳</span>
+${stations.map((s,i)=>`<button class="station s${i+1} ${i>unlocked?'locked':''} ${completed[i]?'done':''} ${i===unlocked?'next':''}" data-i="${i}" ${i>unlocked?'disabled':''}><div class="icon">${s.icon}</div><div class="sn">STESEN ${i+1} ${completed[i]?'🏅':''}</div><div class="st">${s.name}</div></button>`).join('')}
+</div></div>
+<div class="actions"><button class="secondary" id="mapNotes">📖 Nota Kata Sendi Nama</button><button class="secondary" id="restart">↻ Mula Semula</button></div>`;
+document.querySelectorAll('.station:not(.locked)').forEach(b=>b.onclick=()=>showQuestion(+b.dataset.i));
+document.getElementById('mapNotes').onclick=showNotes;document.getElementById('restart').onclick=restart;
+}
+function showQuestion(i){
+const s=stations[i];
+screen.innerHTML=`<div class="top"><button class="secondary" id="back">← Peta</button><div class="stats"><span class="stat">🏅 ${completed.filter(Boolean).length}/10</span><span class="stat">⭐ ${score}</span></div></div>
+<div class="card"><div class="scene">${s.icon}</div><div style="text-align:center"><span class="badge">🚨 STESEN ${i+1} • ${s.name}</span></div>
+<div class="question">${s.q}</div><div class="options">${s.opts.map((o,j)=>`<button class="option" data-j="${j}">${String.fromCharCode(65+j)}. ${o}</button>`).join('')}</div><div id="feedback"></div></div>`;
+document.getElementById('back').onclick=showMap;
+document.querySelectorAll('.option').forEach(b=>b.onclick=()=>answer(i,+b.dataset.j));
+}
+function answer(i,j){
+const s=stations[i],bs=document.querySelectorAll('.option');bs.forEach(b=>b.disabled=true);bs[s.ans].classList.add('correct');
+const fb=document.getElementById('feedback');
+if(j===s.ans){
+score+=10;completed[i]=true;unlocked=Math.max(unlocked,i+1);
+fb.className='feedback success';
+fb.innerHTML=`<div class="modal"><div class="medal">🏅</div><div style="font-size:27px;font-weight:1000">TAHNIAH!</div><div style="font-size:19px;font-weight:900">Anda mendapat Lencana Wira Keselamatan!</div><div class="stars">⭐ ⭐ ⭐</div><p>${s.exp}</p><button class="primary" id="continue">➡️ ${i===9?'Lihat Keputusan':'Teruskan ke Stesen Seterusnya'}</button></div>`;
+document.getElementById('continue').onclick=()=>i===9?showResult():showMap();
+}else{
+bs[j].classList.add('wrong');fb.className='feedback error';
+fb.innerHTML=`💡 Belum tepat. Jawapan yang betul ialah <strong>“${s.opts[s.ans]}”</strong>.<br>${s.exp}<div class="actions"><button class="primary" id="retry">🔁 Cuba Lagi</button></div>`;
+document.getElementById('retry').onclick=()=>showQuestion(i);
+}
+}
+function showNotes(){
+home.classList.add('hidden');screen.classList.remove('hidden');
+screen.innerHTML=`<div class="top"><button class="secondary" id="backHome">← Kembali</button><span class="badge">📖 NOTA WIRA</span></div>
+<div class="card note"><h2 style="font-size:28px;font-weight:1000">🧠 Kata Sendi Nama</h2>
+<p>📍 <strong>di</strong> – menunjukkan tempat. Contoh: Poli berada <strong>di</strong> balai polis.</p>
+<p>➡️ <strong>ke</strong> – menunjukkan arah/tempat dituju. Contoh: Poli bergerak <strong>ke</strong> hospital.</p>
+<p>🏠 <strong>dari</strong> – menunjukkan tempat asal. Contoh: Poli datang <strong>dari</strong> sekolah.</p>
+<p>👤 <strong>daripada</strong> – menunjukkan sumber/orang. Contoh: Arahan datang <strong>daripada</strong> guru.</p>
+<p>📣 <strong>kepada</strong> – menunjukkan penerima. Contoh: Polis bercakap <strong>kepada</strong> orang ramai.</p>
+<p>🎯 <strong>untuk</strong> – menunjukkan tujuan. Contoh: Topi digunakan <strong>untuk</strong> keselamatan.</p>
+<p>🛡️ <strong>dengan</strong> – menunjukkan cara. Contoh: Murid berjalan <strong>dengan</strong> berhati-hati.</p>
+<div class="actions"><button class="primary" id="noteStart">🚓 Kembali ke Misi</button></div></div>`;
+document.getElementById('backHome').onclick=()=>{screen.classList.add('hidden');home.classList.remove('hidden')};
+document.getElementById('noteStart').onclick=showMap;
+}
+function showResult(){
+screen.innerHTML=`<div class="card" style="text-align:center;background:linear-gradient(135deg,#fff8d8,#e3f7ff)"><div class="medal">🏆</div>
+<h2 style="font-size:34px;font-weight:1000">MISI SELESAI!</h2><div class="stars">⭐ ⭐ ⭐ ⭐ ⭐</div>
+<p style="font-size:19px;font-weight:900">Tahniah, Wira Keselamatan Broomstown!</p>
+<div class="stats" style="justify-content:center"><span class="stat">🏅 ${completed.filter(Boolean).length}/10 Lencana</span><span class="stat">⭐ ${score}/100 Mata</span></div>
+<p style="color:#526174;font-weight:700">Anda telah membantu Poli menjaga keselamatan Broomstown sambil menguasai kata sendi nama.</p>
+<div class="actions"><button class="primary" id="again">🔄 Main Semula</button></div></div>`;
+document.getElementById('again').onclick=restart;
+}
+function restart(){unlocked=0;score=0;completed=Array(10).fill(false);showMap()}
+document.getElementById('start').onclick=showMap;
+document.getElementById('notes').onclick=showNotes;
+</script>
+</body>
+</html>
